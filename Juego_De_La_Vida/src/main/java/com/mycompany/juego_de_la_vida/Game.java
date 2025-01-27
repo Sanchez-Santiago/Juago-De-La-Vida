@@ -8,16 +8,10 @@ public class Game {
     public Game() {
     }
     
-    // Inicializa la cuadrícula con valores aleatorios (0)
-//    public int[][] inicializarGridBlanco(int filas, int columnas) {
-//        grid = new int[filas][columnas]; // Inicializa la matriz antes de usarla
-//        for (int i = 0; i < filas; i++) {
-//            for (int j = 0; j < columnas; j++) {
-//                grid[i][j] = 0; // Todas las celdas están muertas inicialmente
-//            }
-//        }
-//        return grid;
-//    }
+    public HashMap inicializarGridBlanco(int filas, int columnas, HashMap<Posicion, Integer> grid) {
+        grid.clear();
+        return grid;
+    }
 
     public HashMap inicializarGridRandom(int filas, int columnas, HashMap<Posicion, Integer> grid) {
         for (int i = 0; i < filas; i++) {
@@ -31,11 +25,6 @@ public class Game {
         }
         return grid;
     }
-
-
-//    public int[][] getGrid() {
-//        return grid;
-//    }
 
     // Método para obtener la siguiente generación
     public HashMap<Posicion, Integer> siguienteGeneracion(int filas, int columnas, HashMap<Posicion, Integer> grid) {
@@ -86,8 +75,4 @@ public class Game {
         return vivos;
     }
 
-
-//    public void reiniciar(int fila, int columna) {
-//        inicializarGridRandom(fila, columna);
-//    }
 }

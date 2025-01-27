@@ -11,14 +11,16 @@ public class Ventana extends JFrame {
     public Ventana() {
         setTitle("Juego de la Vida");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Crear la instancia de Tablero después de que la ventana haya sido inicializada
-        Tablero tablero = new Tablero(ancho, alto); // Usar valores iniciales
+
+        Tablero tablero = new Tablero(ancho, alto);
+        tablero.calcularCuadricula(ancho, alto); // Ajustar el tamaño inicial
         MenuSuperior menuSuperior = new MenuSuperior(tablero);
         setJMenuBar(menuSuperior.getMenuBar());
 
         JScrollPane scrollPane = new JScrollPane(tablero);
-        add(scrollPane);
+
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
 
         setSize(ancho, alto); // Usar los valores iniciales de ancho y alto
         setLocationRelativeTo(null);
@@ -39,3 +41,4 @@ public class Ventana extends JFrame {
         });
     }
 }
+

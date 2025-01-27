@@ -17,12 +17,18 @@ public class Tablero extends JPanel {
     private int zoom = 10;             // Tamaño inicial de cada celda (en píxeles)
     private Game game = new Game();
 
-    public void calcularCuadricula(int ancho, int alto){
-        filas = ancho / zoom;
-        columnas = alto / zoom;
+    public void calcularCuadricula(int ancho, int alto) {
+        filas = alto / zoom;
+        columnas = ancho / zoom;
+
+        // Ajustar el tamaño preferido del tablero
+        setPreferredSize(new Dimension(columnas * zoom, filas * zoom));
+        revalidate(); // Actualizar el layout
     }
 
+
     public Tablero(int ancho, int alto) {
+        
         System.out.println("W: " + ancho + "H: " + alto);
         calcularCuadricula(ancho, alto);
         // Inicializa la cuadrícula con valores aleatorios
@@ -35,15 +41,15 @@ public class Tablero extends JPanel {
                 repaint(); // Redibujar el tablero
             }
         });
-
+        
         // Agregar soporte para zoom con el scroll del mouse
         addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
                 if (e.getPreciseWheelRotation() < 0) {
-                    zoomIn();
+                    zoomIn(ancho, alto);
                 } else {
-                    zoomOut();
+                    zoomOut(ancho, alto);
                 }
             }
         });
@@ -58,14 +64,16 @@ public class Tablero extends JPanel {
     }
 
     // Incrementa el nivel de zoom
-    private void zoomIn() {
+    private void zoomIn(int ancho, int alto) {
         zoom = Math.min(zoom + 2, 50); // Limita el zoom máximo
+        calcularCuadricula(ancho, alto);
         repaint();
     }
 
     // Decrementa el nivel de zoom
-    private void zoomOut() {
+    private void zoomOut(int ancho, int alto) {
         zoom = Math.max(zoom - 2, 5); // Limita el zoom mínimo
+        calcularCuadricula(ancho, alto);
         repaint();
     }
 
@@ -88,19 +96,33 @@ public class Tablero extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
-        // Dibuja las celdas
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                Posicion pos = new Posicion(i, j);
-                if (grid.getOrDefault(pos, 0) == 1) {
-                    g.setColor(Color.BLACK); // Celda viva
-                } else {
-                    g.setColor(Color.WHITE); // Celda muerta
+        
+        if (grid.isEmpty()){
+            // Dibuja las celdas
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Posicion pos = new Posicion(i, j);
+                        g.setColor(Color.WHITE); // Celda muerta
+                    g.fillRect(j * zoom, i * zoom, zoom, zoom); // Dibuja la celda
                 }
-                g.fillRect(j * zoom, i * zoom, zoom, zoom); // Dibuja la celda
             }
         }
+        else{
+            // Dibuja las celdas
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    Posicion pos = new Posicion(i, j);
+                    if (grid.getOrDefault(pos, 0) == 1) {
+                        g.setColor(Color.BLACK); // Celda viva
+                    } else {
+                        g.setColor(Color.WHITE); // Celda muerta
+                    }
+                    g.fillRect(j * zoom, i * zoom, zoom, zoom); // Dibuja la celda
+                }
+            }
+        }
+
+        
 
         // Dibuja las líneas de la cuadrícula
         g.setColor(Color.GRAY);
@@ -132,10 +154,11 @@ public class Tablero extends JPanel {
         grid = game.inicializarGridRandom(filas, columnas, grid);
         repaint();
     }
-    public void iniciarSimulacionBlanco(){
-        grid = game.inicializarGridRandom(filas, columnas, grid);
+    public void iniciarSimulacionBlanco() {
+        grid = game.inicializarGridBlanco(filas, columnas, grid); // Inicializa el grid vacío
         repaint();
     }
+
 
     // Ajusta el tamaño preferido del JPanel según el nivel de zoom
     @Override
