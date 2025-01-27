@@ -23,10 +23,7 @@ Este programa también incluye una **interfaz gráfica interactiva** donde el us
 
 ---
 
-## Cómo ejecutar el proyecto  
 
-**Próximamente: instrucciones específicas para ejecutar el programa y configuraciones necesarias.**
 
 ---
 
-¿Quieres que agreguemos secciones como versión de Java, dependencias o instrucciones de instalación?  
